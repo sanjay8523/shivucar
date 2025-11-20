@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarav Auto Cars - Maruti Brezza ZDI+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- CORE STYLING --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --text: #e0e0e0;
+            --text-light: #aaaaaa;
+            --red: #ff3d00; 
+            --blue: #00bcd4;
+            --green: #25D366; /* WhatsApp Green */
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 1rem; }
+
+        /* Header */
+        header {
+            position: fixed; top: 0; left: 0; right: 0; background: rgba(15,15,15,0.95);
+            backdrop-filter: blur(10px); z-index: 1000; padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 700; }
+        .logo img { height: 50px; }
+        .nav-menu { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-menu a { color: var(--text-light); text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .nav-menu a:hover { color: white; }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: white; }
+
+        /* --- LANDING HERO --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 1rem 2rem;
+        }
+        .car-card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            max-width: 500px; /* Slightly wider for the grid */
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .car-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(255,61,0,0.3);
+        }
+        
+        .car-title {
+            padding: 1.5rem 1rem 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            text-align: center;
+        }
+        .car-subtitle {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        .car-img-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        .car-img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        
+        /* New "Emoji Info" Grid Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+            gap: 1px; /* Gap for borders */
+            background: rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-item {
+            background: #222;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .stat-item i {
+            font-size: 1.2rem;
+            color: var(--blue);
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+        }
+        .price-item {
+            grid-column: span 3; /* Price takes full width */
+            background: var(--red);
+            color: white;
+        }
+        .price-item .stat-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+        .price-item .stat-label { color: rgba(255,255,255,0.8); }
+        .price-item i { color: white; }
+
+
+        /* General Sections */
+        section { padding: 5rem 0; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; position: relative; }
+        .section-title::after { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--red); border-radius: 2px; }
+
+        /* Gallery */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .gallery-item { border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5); cursor: pointer; transition: 0.3s; position: relative; }
+        .gallery-item:hover { transform: scale(1.03); }
+        .gallery-item img { width: 100%; height: 200px; object-fit: cover; }
+        .gallery-item h4 { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); padding: 10px; font-size: 0.9rem; }
+        
+        .category-title {
+            font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem; color: white;
+            display: flex; align-items: center; gap: 10px; padding-top: 2rem; padding-bottom: 0.5rem;
+        }
+
+        /* Key Features - Horizontal Scroll UI */
+        .features-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 2rem;
+            padding: 1rem 0;
+            padding-bottom: 2rem; /* Added space for scrollbar */
+            scroll-behavior: smooth;
+        }
+        .features-scroll::-webkit-scrollbar { height: 8px; }
+        .features-scroll::-webkit-scrollbar-track { background: #333; border-radius: 10px; }
+        .features-scroll::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
+        .feature-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 2rem;
+            min-width: 320px; /* Ensures cards are wide enough */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .feature-card:hover { border-color: var(--blue); transform: translateY(-5px); }
+        .feature-card i { font-size: 2.5rem; color: var(--blue); margin-bottom: 1.5rem; display: block; }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: white; border-bottom: 2px solid var(--red); padding-bottom: 10px; }
+        .feature-card ul { list-style: none; }
+        .feature-card li { margin: 0.7rem 0; padding-left: 1.5rem; position: relative; color: var(--text-light); }
+        .feature-card li::before { content: '✓'; color: var(--red); font-weight: bold; position: absolute; left: 0; }
+
+        /* Contact */
+        .contact-section { background: linear-gradient(135deg, #1e3c72, #0f0f0f); text-align: center; padding-bottom: 6rem; }
+        .proprietors { margin-bottom: 2rem; font-size: 1.2rem; color: #ddd; }
+        .proprietors strong { color: white; display: block; font-size: 1.5rem; margin-bottom: 0.5rem; }
+        
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            background-color: var(--green);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+            transition: transform 0.3s;
+            margin-top: 1rem;
+        }
+        .whatsapp-btn:hover { transform: scale(1.05); background-color: #1ebd59; }
+
+        /* Lightbox */
+        .lightbox { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; padding: 2rem; }
+        .lightbox.active { display: flex; }
+        .lightbox img { max-width: 90%; max-height: 90vh; object-fit: contain; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+        .close-lightbox { position: absolute; top: 2rem; right: 2rem; font-size: 3rem; cursor: pointer; color: white; }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; flex-direction: column; position: absolute; top: 75px; left: 0; right: 0; background: #111; padding: 1rem; }
+            .nav-menu.active { display: flex; }
+            .menu-toggle { display: block; }
+            .hero { padding: 80px 1rem 0; }
+            .car-img-container { max-width: 100%; height: 250px; }
+            .features-scroll { padding-bottom: 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); } /* 2 cols on mobile */
+            .price-item { grid-column: span 2; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container nav">
+        <div class="logo">
+            <img src="images/logo/Gemini_Generated_Image_labuuklabuuklabu.png" alt="Aarav Auto Cars Logo">
+            <span>Aarav Auto Cars</span>
+        </div>
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">☰</div>
+        </nav>
+    </div>
+</header>
+
+<section class="hero" id="home">
+    <div class="car-card" onclick="document.getElementById('mainContent').classList.add('unveiled'); scrollToSection('gallery')">
+        <div class="car-title">Maruti Brezza ZDI+ <span style="font-size: 0.6em; color: var(--red); vertical-align: middle; margin-left: 10px; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px;">KA03</span></div>
+        
+        <div class="car-img-container">
+            <img src="images/exterior/front-view.jpg.jpeg" alt="Brezza" class="car-img">
+            </div>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span class="stat-value">2018</span>
+                <span class="stat-label">Year</span>
+            </div>
+            
+            <div class="stat-item">
+                <i class="fas fa-cogs"></i>
+                <span class="stat-value">Manual</span>
+                <span class="stat-label">Trans</span>
+            </div>
+            
+            <div class="stat-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="stat-value">65,000 KM</span>
+                <span class="stat-label">Driven</span>
+            </div>
+            
+            <div class="stat-item">
+                <i class="fas fa-gas-pump"></i>
+                <span class="stat-value">Diesel</span>
+                <span class="stat-label">Fuel</span>
+            </div>
+            
+            <div class="stat-item">
+                <i class="fas fa-user"></i>
+                <span class="stat-value">1st Owner</span>
+                <span class="stat-label">Owner</span>
+            </div>
+            
+            <div class="stat-item">
+                <i class="fas fa-shield-alt"></i>
+                <span class="stat-value">Comprehen.</span>
+                <span class="stat-label">Insurance</span>
+            </div>
+
+            <div class="stat-item price-item">
+                <div class="stat-label" style="margin-bottom:0;">Price</div>
+                <div class="stat-value">₹9,65,000/- <span style="font-size:0.6em; font-weight:400;">(Negotiable)</span></div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 10px; background: #222; color: #666; font-size: 0.8rem;">
+            Click card to view full details & gallery
+        </div>
+    </div>
+</section>
+
+<div id="mainContent" class="hidden-content">
+
+    <section id="gallery" class="container">
+        <h2 class="section-title">Vehicle Gallery</h2>
+        
+        <h3 class="category-title"><i class="fas fa-car"></i> Exterior Views</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(0)"><img src="images/exterior/front-view.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Front View</h4></div>
+            <div class="gallery-item" onclick="openLightbox(1)"><img src="images/exterior/rear-view.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Rear View</h4></div>
+            <div class="gallery-item" onclick="openLightbox(2)"><img src="images/exterior/side-view-1.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Side Profile 1</h4></div>
+            <div class="gallery-item" onclick="openLightbox(3)"><img src="images/exterior/side-view-2.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Side Profile 2</h4></div>
+        </div>
+        
+        <h3 class="category-title"><i class="fas fa-chair"></i> Interior & Comfort</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(4)"><img src="images/interior/dashboard.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Dashboard</h4></div>
+            <div class="gallery-item" onclick="openLightbox(5)"><img src="images/interior/instrument-cluster.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Instrument Cluster</h4></div>
+            <div class="gallery-item" onclick="openLightbox(6)"><img src="images/interior/front-seats.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Front Seats</h4></div>
+            <div class="gallery-item" onclick="openLightbox(7)"><img src="images/interior/rear-seats.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Rear Seats</h4></div>
+        </div>
+        
+        <h3 class="category-title"><i class="fas fa-tools"></i> Technical Details</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(8)"><img src="images/details/wheel-tire.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Alloy Wheels</h4></div>
+            <div class="gallery-item" onclick="openLightbox(9)"><img src="images/details/engine.jpg.jpeg" alt=""><h4 onclick="event.stopPropagation()">Engine Bay</h4></div>
+        </div>
+    </section>
+
+    <section id="features" style="background: #111;">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-scroll">
+                <div class="feature-card">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>Performance</h3>
+                    <ul>
+                        <li>1.3L DDiS Diesel Engine</li>
+                        <li>Excellent Fuel Economy</li>
+                        <li>Showroom Maintained</li>
+                        <li>Full Service History</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Safety</h3>
+                    <ul>
+                        <li>Dual Front Airbags</li>
+                        <li>ABS with EBD</li>
+                        <li>Rear Parking Sensors</li>
+                        <li>Comprehensive Insurance</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-key"></i>
+                    <h3>Convenience</h3>
+                    <ul>
+                        <li>Keyless Entry & Go</li>
+                        <li>Auto Climate Control</li>
+                        <li>Cruise Control</li>
+                        <li>Height Adjustable Driver Seat</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3>Style</h3>
+                    <ul>
+                        <li>Pearl White + Black Roof</li>
+                        <li>Dual-Tone Alloy Wheels</li>
+                        <li>Projector Headlamps</li>
+                        <li>LED DRLs + Roof Rails</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-music"></i>
+                    <h3>Infotainment</h3>
+                    <ul>
+                        <li>7" Touchscreen System</li>
+                        <li>Apple CarPlay & Android Auto</li>
+                        <li>Steering Controls</li>
+                        <li>6 Speakers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title" style="color:white;">Get In Touch</h2>
+            
+            <div class="proprietors">
+                <p>Proprietors</p>
+                <strong>Raghu.V & Shivshankar.MS</strong>
+            </div>
+
+            <div class="contact-info">
+                <div style="font-size: 1.2rem; margin-bottom: 1rem;">
+                    <i class="fas fa-map-marker-alt" style="color: var(--red);"></i> Mysuru, Karnataka
+                </div>
+                
+                <a href="https://wa.me/919945395930" target="_blank" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+</div> 
+
+<div id="lightbox" class="lightbox">
+    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+    <div style="position:relative;">
+        <img id="lightboxImg" src="" alt="Full-size image">
+        <p id="lightboxCaption" style="color:white; text-align:center; padding: 1rem;"></p>
+    </div>
+</div>
+
+<script>
+// --- Image Data Mapping ---
+const images = [
+    {src: "images/exterior/front-view.jpg.jpeg", caption: "Front View – Brezza ZDI+"},
+    {src: "images/exterior/rear-view.jpg.jpeg", caption: "Rear View"},
+    {src: "images/exterior/side-view-1.jpg.jpeg", caption: "Side Profile"},
+    {src: "images/exterior/side-view-2.jpg.jpeg", caption: "Clean Body Line"},
+    {src: "images/interior/dashboard.jpg.jpeg", caption: "Premium Dashboard with Music System"},
+    {src: "images/interior/instrument-cluster.jpg.jpeg", caption: "65,000 KM Driven"},
+    {src: "images/interior/front-seats.jpg.jpeg", caption: "Front Seats"},
+    {src: "images/interior/rear-seats.jpg.jpeg", caption: "Spacious Rear"},
+    {src: "images/details/wheel-tire.jpg.jpeg", caption: "Company Alloy Wheels"},
+    {src: "images/details/engine.jpg.jpeg", caption: "Clean Engine Bay - Diesel"}
+];
+
+let currentIndex = 0;
+
+// --- UTILITY FUNCTIONS ---
+function scrollToSection(id) {
+    const target = document.getElementById(id);
+    if (target) {
+        window.scrollTo({
+            top: target.offsetTop - 80, 
+            behavior: 'smooth'
+        });
+    }
+}
+
+// --- LIGHTBOX/MODAL LOGIC ---
+function openLightbox(index) {
+    currentIndex = index;
+    document.getElementById('lightboxImg').src = images[index].src;
+    document.getElementById('lightboxCaption').textContent = images[index].caption;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// --- INITIAL CLICK HANDLER ---
+document.querySelector('.car-card').addEventListener('click', () => {
+    document.getElementById('mainContent').classList.add('unveiled');
+    document.getElementById('home').style.minHeight = '10vh'; 
+    setTimeout(() => {
+        scrollToSection('gallery');
+    }, 500); 
+});
+
+// --- MENU AND NAVIGATION LOGIC ---
+document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('navMenu').classList.toggle('active');
+});
+
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        
+        if (targetId !== 'home' && !document.getElementById('mainContent').classList.contains('unveiled')) {
+             document.getElementById('mainContent').classList.add('unveiled');
+        }
+
+        setTimeout(() => {
+            scrollToSection(targetId);
+        }, 50);
+
+        if (document.getElementById('navMenu').classList.contains('active')) {
+            document.getElementById('navMenu').classList.remove('active');
+        }
+    });
+});
+
+// --- Lightbox navigation ---
+document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target.id === 'lightbox' || e.target.classList.contains('close-lightbox')) closeLightbox();
+});
+document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + images.length) % images.length; openLightbox(currentIndex); }
+    if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % images.length; openLightbox(currentIndex); }
+});
+</script>
+
+</body>
+</html>
