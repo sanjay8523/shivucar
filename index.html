@@ -196,6 +196,9 @@
             box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
             transition: transform 0.3s;
             margin-top: 1rem;
+            width: 100%;
+            max-width: 400px; /* Prevents buttons from getting too wide on desktop */
+            justify-content: center;
         }
         .whatsapp-btn:hover { transform: scale(1.05); background-color: #1ebd59; }
 
@@ -244,7 +247,7 @@
         
         <div class="car-img-container">
             <img src="images/exterior/front-view.jpg.jpeg" alt="Brezza" class="car-img">
-            </div>
+        </div>
         
         <div class="stats-grid">
             <div class="stat-item">
@@ -391,13 +394,18 @@
             </div>
 
             <div class="contact-info">
-                <div style="font-size: 1.2rem; margin-bottom: 1rem;">
+                <div style="font-size: 1.2rem; margin-bottom: 1.5rem;">
                     <i class="fas fa-map-marker-alt" style="color: var(--red);"></i> Mysuru, Karnataka
                 </div>
                 
-                <a href="https://wa.me/919945395930" target="_blank" class="whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-                </a>
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                    <a href="https://wa.me/919945395930" target="_blank" class="whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i> Shivshankar: 9945395930
+                    </a>
+                    <a href="https://wa.me/919538192271" target="_blank" class="whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i> Raghu V: 95381 92271
+                    </a>
+                </div>
             </div>
         </div>
     </section>
